@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<database key="geoprofiles" name="GEO Profiles">
+	<filters>
+		<filter>Annotation Type</filter>
+		<filter dependency="Chromosome">Base Position</filter>
+		<filter>Chromosome</filter>
+		<filter>Dataset Type</filter>
+		<filter>Filter</filter>
+		<filter>Flag Information</filter>
+		<filter>Flag Type</filter>
+		<filter>GDS Text</filter>
+		<filter>GEO Accession</filter>
+		<filter>NGEO Description/Title Text</filter>
+		<filter>GI</filter>
+		<filter>Gene Description</filter>
+		<filter>Gene Ontology</filter>
+		<filter>Gene Symbol</filter>
+		<filter>ID_REF</filter>
+		<filter>Max Value Rank</filter>
+		<filter>Min Value Rank</filter>
+		<filter>Number of Samples</filter>
+		<filter>Organism</filter>
+		<filter>Platform Reporter Type</filter>
+		<filter>Ranked Standard Deviation</filter>
+		<filter>Reporter Identifier</filter>
+		<filter>Sample Source</filter>
+		<filter>Sample Value Type</filter>
+		<filter single="J">Regular Expression</filter>
+	</filters>
+</database>

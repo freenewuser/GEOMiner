@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<messages>
+
+  
+  <!-- CONTROLLER "Upload" ############################################################################-->
+  <message>
+    <msgcode>Upload.Inf.Load</msgcode>
+    <text>
+      <de>Laden</de>
+      <en>Load</en>
+    </text>
+  </message>
+  <message>
+    <msgcode>Upload.Inf.ChangeView</msgcode>
+    <text>
+      <de>Ansicht wechseln</de>
+      <en>Change view</en>
+    </text>
+  </message>
+  <message>
+    <msgcode>Upload.Inf.Save</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Speichern</de>
+      <en>Save</en>
+    </text>
+  </message>
+  <message>
+    <msgcode>Upload.Inf.ChangePreview</msgcode>
+    <text>
+      <de>Änderungen laden</de>
+      <en>Load changes</en>
+    </text>
+  </message>
+  
+  <message>
+    <msgcode>UploadController.Err.ColumnMismatch</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Die Anzahl der Spalten stimmen nicht in jeder Zeile überein.</de>
+      <en>The column count don't pass.</en>
+    </text>
+  </message>
+  <message>
+    <msgcode>UploadController.Err.NoDataFound</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Es wurde keine Datei gefunden.</de>
+      <en>File not found.</en>
+    </text>
+  </message>
+  <message>
+    <msgcode>UploadController.Err.Total</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Total Fehler: {0}</de>
+      <en>Total Error: {0}</en>
+    </text>
+    <extern>
+      <de>Die Datei konnte leider nicht erfolgreich verarbeitet werden. Eventuell ist sie beschädigt oder sie hat die falsche Codierung (bitte nutzen Sie nur UTF8). Bei weiteren Problemen kontaktieren Sie bitte unseren Support.</de>
+      <en>The file could not be succesfully processed. Maybe it's incorrect or it has the wrong encoding (please use UTF8). In further problems please contact the support.</en>
+    </extern>
+  </message>
+  <message>
+    <msgcode>UploadController.Err.UploadFile1</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Fehler beim Hochladen der Datei. Funktion: "UploadFile".Fall 1  Fehler: {0}</de>
+      <en>Error while uploading an file. Function: "UploadFile".Case 1 Error: {0}</en>
+    </text>
+    <extern>
+      <de>Die Datei konnte leider nicht erfolgreich verarbeitet werden. Eventuell ist sie beschädigt oder sie hat die falsche Codierung (bitte nutzen Sie nur UTF8). Bei weiteren Problemen kontaktieren Sie bitte unseren Support.</de>
+      <en>The file could not be succesfully processed. Maybe it's incorrect or it has the wrong encoding (please use UTF8). In further problems please contact the support.</en>
+    </extern>
+  </message>
+  <message>
+    <msgcode>UploadController.Err.UploadFile2</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Fehler beim Hochladen der Datei. Funktion: "UploadFile".Fall 2 Fehler: {0}</de>
+      <en>Error while uploading an file. Function: "UplaodFile".Case 2 Error: {0}</en>
+    </text>
+    <extern>
+      <de>Die Datei konnte leider nicht erfolgreich verarbeitet werden. Eventuell ist sie beschädigt oder sie hat die falsche Codierung (bitte nutzen Sie nur UTF8). Bei weiteren Problemen kontaktieren Sie bitte unseren Support.</de>
+      <en>The file could not be succesfully processed. Maybe it's incorrect or it has the wrong encoding (please use UTF8). In further problems please contact the support.</en>
+    </extern>
+  </message>
+  
+  <!-- CONTROLLER "Helper" ############################################################################-->
+  <message>
+    <msgcode>Helper.Err.MissingDepedencyFilter</msgcode>
+    <type>Err</type>
+    <text>
+      <de>Der Filter "{0}" darf nicht ohne den Filter {1} verwendet werden.</de>
+      <en>The Filter "{0}" only can be used with the filter "{1}.</en>
+    </text>
+  </message>
+  <message>
+    <msgcode>Helper.Err.DoubleSingleFilter</msgcode>
+    <type>Err</type>
+    <text>
+      <de>Der Filter "{0}" darf nur einmal verwendet werden.</de>
+      <en>The Filter "{0}" only can be used once.</en>
+    </text>
+  </message>
+  
+  <message>
+    <msgcode>Helper.Err.QueryController</msgcode>
+    <type>Err</type>
+    <text>
+      <de>Fehler beim Aufruf des QueryController (GetContent()). Fehler: {0}</de>
+      <en>Error in call querycontroller (getContent()). Error: {0}</en>
+    </text>
+    <extern>
+      <de>Es gab einen Fehler beim Abschicken der Anfrage. Evtl. antwortet der Server der NCBI momentan nicht oder ist überlastet. Bitte versuche es erneut, bei erneutem Fehler wende dich an unser Serviceteam.</de>
+      <en>Something went wrong by sending your request. Maybe the server from NCBI doesn't answer or is overloaded. Please try again, in further problems please contact our support.</en>
+    </extern>
+  </message>
+
+  <!-- CONTROLLER "XML" ############################################################################-->
+  <message>
+    <msgcode>XmlController.Err.IsValid</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Fehler beim Prüfen einer XML-Datei. Fehler: {0}</de>
+      <en>Error while proofing a xml-file. Error: {0}</en>
+    </text>
+  </message>
+  
+  <!-- CONTROLLER "SESSION" ############################################################################-->
+
+  <message>
+    <msgcode>SessionController.Inf.LoadSessionFromFile(Model)</msgcode>
+    <type>Inf</type>
+    <text>
+      <de>Datei konnte erfolgreich verarbeitet werden.</de>
+      <en>File could be succesfully processed.</en>
+    </text>
+  </message>
+
+  <message>
+    <msgcode>SessionController.Err.LoadSessionFromFile(Model)1</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Fehler beim Hochladen der Session. Funktion: "LoadSessionFromFile(Model)".Fall1  Fehler: {0}</de>
+      <en>Error while uploading an session-file. Function: "LoadSessionFromFile(Model)".Case1 Error: {0}</en>
+    </text>
+    <extern>
+      <de>Die Datei konnte leider nicht erfolgreich verarbeitet werden. Eventuell ist es keine gültige XML-Datei oder sie hat die falsche Codierung (bitte nutzen Sie nur UTF8). Bei weiteren Problemen kontaktieren Sie bitte unseren Support.</de>
+      <en>The file could not be succesfully processed. Maybe it's not a valid XML-File or it has the wrong encoding (please use UTF8). In further problems please contact the support.</en>
+    </extern>
+  </message>
+  <message>
+    <msgcode>SessionController.Err.LoadSessionFromFile(Model)2</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Fehler beim Hochladen der Session. Funktion: "LoadSessionFromFile(Model)".Fall2 Fehler: {0}</de>
+      <en>Error while uploading an session-file. Function: "LoadSessionFromFile(Model)".Case2 Error: {0}</en>
+    </text>
+    <extern>
+      <de>Die Datei konnte leider nicht erfolgreich verarbeitet werden. Eventuell ist es keine gültige XML-Datei oder sie hat die falsche Codierung (bitte nutzen Sie nur UTF8). Bei weiteren Problemen kontaktieren Sie bitte unseren Support.</de>
+      <en>The file could not be succesfully processed. Maybe it's not a valid XML-File or it has the wrong encoding (please use UTF8). In further problems please contact the support.</en>
+    </extern>
+  </message>
+  
+  
+  <message>
+    <msgcode>Session.Err.WrongType</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Die Datei hatte einen falschen Datentyp. Bitte wähle nur Dateien vom Typ ".xml".</de>
+      <en>The file has the wrong datatype. Please choose only files from datatype ".xml".</en>
+    </text>
+  </message>
+  
+  <!-- CONTROLLER "FILE" ############################################################################-->
+  <message>
+    <msgcode>File.Err.LoadXmlFromFile</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Fehler beim Laden einer XML-Datei. Controller: "FileController", Funktion: "LoadXmlFromFile". Dateipfad: {0}. Fehler: {1}</de>
+      <en>Error while loading xml-file. Controller: "FileController", Function: "LoadXmlFromFile". Filepath: {0}. Error: {1}</en>
+    </text>
+  </message>
+  
+  <message>
+    <msgcode>File.Err.WriteToXml</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Fehler beim Schreiben der Sessiondatei. Controller: "FileController", Funktion: "WriteToXmL". Fehler: {0}</de>
+      <en>Error in writing the sessionfile. Controller: "FileController", Function: "WriteToXmL". Error: {0}</en>
+    </text>
+  </message>
+  
+  <!-- VIEW "INDEX" ############################################################################-->
+  <message>
+    <msgcode>Index.Err.NoFilter</msgcode>
+    <text>
+      <de>Bitte wähle einen Filter aus.</de>
+      <en>Please choose a filter.</en>
+    </text>
+  </message>
+  <message>
+    <msgcode>Index.Inf.Preview</msgcode>
+    <text>
+      <de>Vorschau</de>
+      <en>Preview</en>
+    </text>
+  </message>
+  <message>
+    <msgcode>Index.Err.ToManyFiles</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Bitte wähle maximal 5 Dateien für die Vorschau aus.</de>
+      <en>Please choose a maximum of 5 files for the preview.</en>
+    </text>
+  </message>
+  <message>
+    <msgcode>Index.Inf.Welcome</msgcode>
+    <type>Info</type>
+    <text>
+      <de>Willkommen</de>
+      <en>Welcome</en>
+    </text>
+  </message>
+
+  <message>
+    <msgcode>Index.Inf.LearnAbout</msgcode>
+    <type>Info</type>
+    <text>
+      <de>Lerne mehr über das&lt;a href="https://docs.microsoft.com/aspnet/core"&gt; Erstellen von Web-Apps mit ASP.NET Core&lt;/a&gt;.</de>
+      <en>"Learn about &lt;a href="https://docs.microsoft.com/aspnet/core"&gt;building Web apps with ASP.NET Core&lt;/a&gt;."</en>
+    </text>
+  </message>
+
+  <!-- VIEW "ABOUT" ############################################################################-->
+  <message>
+    <msgcode>About.Err.TestMessage</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Dies ist eine Testmessage</de>
+      <en>This is a testmessage</en>
+    </text>
+  </message>
+  <message>
+    <msgcode>About.Err.TestMessage</msgcode>
+    <type>Error</type>
+    <text>
+      <de>Dies ist eine Testmessage</de>
+      <en>This is a testmessage</en>
+    </text>
+  </message>
+</messages>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<database key="gds" name="GEO DataSets">
+	<filters>
+		<filter>Attribute</filter>
+		<filter>Attribute Name</filter>
+		<filter>Author</filter>
+		<filter>Dataset Type</filter>
+		<filter>Description</filter>
+		<filter>Entry Type</filter>
+		<filter>Filter</filter>
+		<filter>Geo Accession</filter>
+		<filter>MeSH Terms</filter>
+		<filter>Number of Platform Probes</filter>
+		<filter>Number of Samples</filter>
+		<filter>Organism</filter>
+		<filter>Platform Technology Type</filter>
+		<filter>Project</filter>
+		<filter>Properties</filter>
+		<filter>Publication Date</filter>
+		<filter>Related Platform</filter>
+		<filter>Reporter Identifier</filter>
+		<filter>Sample Source</filter>
+		<filter>Sample Type</filter>
+		<filter>Sample Value Type</filter>
+		<filter>Submitter Institue</filter>
+		<filter>Subset Description</filter>
+		<filter>Subset Variable Type</filter>
+		<filter>Supplementary Files</filter>
+		<filter>Tag Length</filter>
+		<filter>Title</filter>
+		<filter>Update Date</filter>
+		<filter single="J">Regular Expression</filter>
+	</filters>
+</database>

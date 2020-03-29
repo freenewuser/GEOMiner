@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\GEOMiner",
+    "\\GEOMiner\\GEOMiner",
+    "\\GEOMiner\\GEOMiner\\Controllers",
+    "\\GEOMiner\\GEOMiner\\Images",
+    "\\GEOMiner\\GEOMiner\\Models",
+    "\\GEOMiner\\GEOMiner\\Views",
+    "\\GEOMiner\\GEOMiner\\Views\\Home",
+    "\\GEOMiner\\GEOMiner\\Views\\Shared",
+    "\\GEOMiner\\GEOMiner\\wwwroot"
+  ],
+  "SelectedNode": "\\GEOMiner\\GEOMiner\\Views\\Shared\\_Layout.cshtml",
+  "PreviewInSolutionExplorer": false
+}

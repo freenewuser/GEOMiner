@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<filters>
+  <filter>
+    <name>Testname</name>
+    <value>Testwert</value>
+  </filter>
+  
+  <filter>
+    <name>Age</name>
+    <value>18</value>
+  </filter>
+</filters>

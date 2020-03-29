@@ -1,0 +1,267 @@
+﻿@model GEOMiner.Models.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+@section scripts{
+    <script>
+        
+        function SaveToCsv() {
+            $.post("/Home/SaveToCsv");
+        }
+
+        $(document).ready(function () {
+            $("#page").keypress(function (event) {
+                if (event.which == 13) {
+                    var i = parseInt($("#page").val());
+                    if (i >= 0) {
+                        var i = i - 1;
+                        $.post("/Home/SetNewSite?newSite=" + i);
+                    }
+                    
+                }
+            });
+
+            $('#database').change(function () {
+                var db = $('#database').val();
+                $.ajax({
+                       type: "GET",
+                       url: "/Home/ChangeDatabase",
+                       async: false,
+                       data: {newDatabase: db},
+                       datatype: "json"/*,
+                       success: function () { alert("Success");},
+                       error: function () {alert("Error");}*/
+                });
+                //alert("End");
+                //$.post("/Home/ChangeDatabase?newDatabase=" + $('#database').val());
+                //$('#database').val('@Model.database.KeyName');
+                location.reload();
+            });
+
+            $('#database').val('@Model.database.KeyName');
+        });
+
+    </script>
+}
+<div class="page-container">
+
+    <div>
+        <!--<div class="dropdown-list">-->
+        @using (Html.BeginForm("AddFilter", "Home", FormMethod.Post))
+        {
+            <div class="dropdown">
+                @Html.DropDownListFor(m => Model.FilterName, new SelectList(Model.database.Filter), "Select Filter", new { @class = "dropdown-content" })
+                <button type="submit" class="button" style="font-weight: bold; font-size:20px; height: 30px">+</button>
+            </div>
+
+        }
+    </div>
+
+    <div class="content">
+
+        <div class="filterlist" style="padding-top: 10px;">
+            @using (Html.BeginForm("Start", "Home", FormMethod.Post))
+            {
+
+                @Html.DropDownListFor(m => Model.database, Model.DatabaseList.Select(i => new SelectListItem() { Text = i.Name, Value = i.KeyName }), new { @class = "dropdown-content", @style = "margin-left: -30px;"})
+
+                @if (Model.ErrorFilterList != null)
+                {
+                    <p style="color:red">@Html.DisplayFor(m => m.ErrorFilterList)</p>
+                }
+
+                <ul style="list-style-type: none">
+                    @if (Model.FilterList != null)
+                    {
+                        @for (var i = 0; i < Model.FilterList.flist.Count(); i++)
+                        {
+                            <li>
+                                <label class="filtername">@Html.DisplayFor(m => Model.FilterList.flist[i].name)</label> @Html.TextBoxFor(m => Model.FilterList.flist[i].value, new { @class = "filtervalue" }) <button class="button-delete" name="action" value="@Model.FilterList.flist[i].id" type="submit"><i class="fa fa-close"></i></button>
+                                @Html.HiddenFor(m => Model.FilterList.flist[i].name, new { Value = @Model.FilterList.flist[i].name })
+                            </li>
+
+                        }
+                    }
+
+                </ul>
+                @if (Model.ErrorFilterList == null)
+                {
+                    <button type="submit" class="button">Start</button>
+                }
+
+            }
+        </div>
+
+
+
+        <div class="contenttable">
+            @if (Model.ContentList != null)
+            {
+                @using (Html.BeginForm("SaveToCsv", "Home", FormMethod.Post))
+                {
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="background-color: white"></th>
+
+                                @switch (Program.indexModel.database.KeyName)
+                                {
+                                    case ("geoprofiles"):
+                                    case ("gds"):
+                                        <th style="width: 100px;">Title</th>
+                                        break;
+                                }
+                                @switch (Program.indexModel.database.KeyName)
+                                {
+                                    case ("geoprofiles"):
+                                        <th style="width: 40px;">Annotation</th>
+                                        break;
+                                    @*case ("gds"):
+                                        <th style="width: 40px;">Summary</th>
+                                        break;*@
+                                }
+                                @switch(Program.indexModel.database.KeyName)
+                                {
+                                    case ("gds"):
+                                        <th style="width: 20px">Type</th>
+                                        break;
+                                }
+                                @switch (Program.indexModel.database.KeyName)
+                                {
+                                    case ("geoprofiles"):
+                                    case ("gds"):
+                                        <th style="width: 20px; text-align: right">ID</th>
+                                        break;
+                                }
+
+
+                            </tr>
+
+                        </thead>
+
+                        @if (Model.cps > 0)
+                        {
+                            <tfoot>
+                                <tr>
+                                    <td style="background-color: white"></td>
+                                    <td colspan="5">
+                                        <div class="tfoot">
+                                            Page:
+                                            @Html.HiddenFor(m => Model.actSite)
+                                            @if (Model.actSite > 0)
+                                            {
+                                                <button style="margin-right: -12px;" class="button-site" name="newSite" value="0">&lt;&lt;</button>
+                                                <button class="button-site" name="newSite" value="@(Model.actSite-1)">&lt;</button>
+                                            }
+
+                                            <input class="textbox-page" id="page" type="text" name="newSite_" value="@(Model.actSite + 1)" /> of @(Math.Ceiling((double)Model.ContentList.Count / Model.cps))
+
+                                            @if (Model.actSite < Math.Ceiling((double)Model.ContentList.Count / Model.cps) - 1)
+                                            {
+                                                <button class="button-site" name="newSite" value="@(Model.actSite + 1)">&gt;</button>
+                                                <button style="margin-left: -12px;" class="button-site" name="newSite" value="@(Math.Ceiling((double)Model.ContentList.Count / Model.cps)-1)">&gt;&gt;</button>
+                                            }
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: white"></td>
+                                    <td colspan="5">
+                                        <div class="tfoot">
+                                            Results per Site:
+                                            @Html.HiddenFor(m => Model.cps)
+                                            @if (Model.cps == 10)
+                                            {
+                                                <button name="newCps" value="10" class="btn-cps-act" style="height: 12px; font-size: 8px; font-weight: bold;">10</button>
+                                            }
+                                            else
+                                            {
+                                                <button name="newCps" value="10" class="btn-cps" style="height: 12px; font-size: 8px; font-weight: bold;">10</button>
+                                            }
+                                            @if (Model.cps == 20)
+                                            {
+                                                <button name="newCps" value="20" class="btn-cps-act" style="height: 12px; font-size: 8px; font-weight: bold;">20</button>
+                                            }
+                                            else
+                                            {
+                                                <button name="newCps" value="20" class="btn-cps" style="height: 12px; font-size: 8px; font-weight: bold;">20</button>
+                                            }
+                                            @if (Model.cps == 50)
+                                            {
+                                                <button name="newCps" value="50" class="btn-cps-act" style="height: 12px; font-size: 8px; font-weight: bold;">50</button>
+                                            }
+                                            else
+                                            {
+                                                <button name="newCps" value="50" class="btn-cps" style="height: 12px; font-size: 8px; font-weight: bold;">50</button>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        }
+
+                        <tbody>
+                            @if (Model.SetPartialList())
+                            {
+
+                            }
+                            @for (int i = 0; i < Program.indexModel.PartialContentList.Count; i++)
+                            {
+
+                            <tr>
+                                <td style="background-color:white">@(i + 1 + Model.cps * Model.actSite).  @Html.CheckBoxFor(m => Model.PartialContentList[i].download)</td>
+
+                                @switch (Program.indexModel.database.KeyName)
+                                {
+                                    case ("geoprofiles"):
+                                    case ("gds"):
+                                        <td style="width: 100px;">@Model.PartialContentList[i].Title</td>
+                                        break;
+                                }
+                                @switch (Program.indexModel.database.KeyName)
+                                {
+                                    case ("geoprofiles"):
+                                        <td style="width: 40px;">@((Model.PartialContentList[i].geneName is null) ? Model.PartialContentList[i].geneDesc : String.Concat(Model.PartialContentList[i].geneName, ",", Model.PartialContentList[i].geneDesc))</td>
+                                        break;
+                                    @*case ("gds"):
+                                        <td style="width: 40px; font-size: 10px;">@((Model.ContentList[i].Summary != null && Model.ContentList[i].Summary.Length >= 100) ? String.Concat(Model.ContentList[i].Summary.Substring(0, 50), "...") : Model.ContentList[i].Summary)</td>
+                                        break;*@
+                                }
+                                @switch (Program.indexModel.database.KeyName)
+                                {
+                                    case ("gds"):
+                                        <td style="width: 20px; font-size: 10px;">@Model.PartialContentList[i].Type</td>
+                                        break;
+                                }
+                                @switch (Program.indexModel.database.KeyName)
+                                {
+                                    case ("geoprofiles"):
+                                    case ("gds"):
+                                        <td style="width: 20px; text-align: right">@Model.PartialContentList[i].ID</td>
+                                        break;
+                                }
+
+                            </tr>
+
+
+                            }
+                        </tbody>
+
+
+
+                    </table>
+                    <br />
+                    <button class="button" type="submit">@ViewData["Preview"]</button>
+                }
+            }
+
+
+
+        </div>
+        @if (Model.ExceptionMessage != null)
+        {
+            <p id="buttonSubmit" style="color:red; display: inline-block">@Html.DisplayFor(m => m.ExceptionMessage)</p>
+        }
+    </div>
+</div>

@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GEOMiner</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    @using GEOMiner.Controllers
+
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index">GEOMiner</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Session" asp-action="Session">Session</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Upload" asp-action="Upload">Upload</a>
+                        </li>
+                        <!--<li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+    </li>-->
+                        <!--<li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="" asp-page="/About">About</a>
+    </li>-->
+
+                    </ul>
+                </div>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Helper" asp-action="SetLanguage" asp-route-lang="en">
+                    <img src="~/union_jack.jpg" style="max-width: 20px; max-height: 20px" alt="english"/>
+                </a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Helper" asp-action="SetLanguage" asp-route-lang="de">
+                    <img src="~/schwarz_rot_gold.png" style="max-width: 20px; max-height: 20px" alt="german"/>
+                </a>
+
+            </div>
+        </nav>
+    </header>
+    <div class="page-container">
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; @DateTime.Now.Year - GEOMiner - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+        </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("scripts", true)
+</body>
+</html>

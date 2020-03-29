@@ -1,0 +1,261 @@
+﻿@model GEOMiner.Models.UploadModel
+@{
+    ViewData["Title"] = "Upload";
+}
+@section scripts
+{
+    <script>
+        function addEventHandler(obj, evt, handler) {
+            if (obj.addEventListener) {
+                obj.addEventListener(evt, handler, false);
+            }
+            else if (obj.attachEvent) {
+                ob.attachEvent('on' + evt, handler);
+            }
+            else {
+                obj['on' + evt] = handler;
+            }
+        }
+
+        function ChangeViewMode() {
+            $.post("/Upload/ChangeViewMode");
+        }
+        $(document).ready(function () {
+            $('#buttonCheckFile').click(function () {
+                $('#formUpload').submit();
+            });
+
+            $('#file').change(function () {
+                $('#buttonCheckFile').removeAttr("disabled");
+                $('#fileName').attr("disabled", "disabled");
+                if ($(this).val() == "") {
+                    $('#buttuonCheckFile').attr("disabled", "disabled");
+                    $('#fileName').removeAttr("disabled");
+                }
+            });
+
+            $('#fileName').change(function () {
+                $('#buttonCheckFile').removeAttr("disabled");
+                $('#file').attr("disabled", "disabled");
+                if ($('#fileName').val() == "") {
+                    $('#buttuonCheckFile').attr("disabled", "disabled");
+                    $('#file').removeAttr("disabled");
+                }
+            });
+
+            if (window.FileReader) {
+                var drop = document.getElementById('dropZone');
+                function cancel(e) {
+                    if (e.preventDefault) { e.preventDefault(); } return false;
+                }
+
+                addEventHandler(drop, 'dragover', cancel);
+                addEventHandler(drop, 'dragenter', cancel);
+            }
+
+
+            addEventHandler(drop, 'drop', function (e) {
+                if (drop != null && drop != undefined) {
+                    e = e || window.event;
+                    if (e.preventDefault) {
+                        e.preventDefault();
+                    }
+                    var dt = e.dataTransfer;
+                    var files = dt.files;
+                    if (files.length > 0) {
+                        var file = files[0];
+                        var reader = new FileReader();
+                        reader.onload = function (event) {
+                            $('#fileString').val(event.target.result);
+                            $('#fileName').val(file.name);
+                            $('#fileName').change();
+
+                        }
+                        reader.readAsDataURL(file);
+                        return true;
+                    }
+                }
+                return false;
+            })
+
+        })
+    </script>
+}
+
+@using (Html.BeginForm("UploadFile", "Upload", FormMethod.Post, new { enctype = "multipart/form-data", id = "formUpload" }))
+{
+    <div class="form-group" id="selectZone">
+        <label id="fileLabel" class="col-xl-12" for="file">Datei auswählen</label>
+        @Html.TextBoxFor(m => m.file, new { type = "file", placeholder = "Bitte die Datei auswählen", @class = "fileinput" })
+        @Html.ValidationMessageFor(m => m.file)
+    </div>
+
+    <div class="form-group" id="dropZone">
+        <label id="fileNameLabel" class="col-xl-12" for="fileName">Datei reinziehen</label>
+        @Html.TextBoxFor(m => m.fileName, new { placeholder = "Bitte ziehen sie hier ihre Datei rein.", @class = "filedrop" })
+        @Html.HiddenFor(m => m.fileString)
+
+    </div>
+
+    @if (Model.ExceptionMessage != null)
+    {
+        <p style="color:red">@Html.DisplayFor(m => m.ExceptionMessage)</p>
+    }
+
+    <button class="button" type="submit" id="buttonCheckFile" disabled="disabled">@ViewData["Load"]</button>
+}
+
+@if(Model.FileList != null && Model.FileList.Count > 0)
+{
+<div class="contentx">
+    <br />
+    @using (Html.BeginForm("ChangeViewMode", "Upload", FormMethod.Post))
+    {
+        <button type="submit" class="button" name="Mode" value="@Model.ViewMode">@ViewData["ChangeView"]</button>
+        <br/> <br/>
+    }
+
+    @using (Html.BeginForm("CreateNewView", "Upload", FormMethod.Post))
+    {
+        @if (Model.ViewMode == "FLAT")
+        {
+            @for (int i = 0; i < Model.FileList.Count; i++)
+            {
+                <div style="margin-top: 30px">
+                @if (Model.FileList[i] != null)
+                {
+                    @if (Model.Step == 1)
+                    {
+                        <div class="uploadtable">
+
+
+                            <ul>
+                                @if (Model.FileList[i].ID != null)
+                                {
+                                    <li>@Html.DisplayFor(m => Model.FileList[i].ID)</li>
+                                }
+                                @if (Model.FileList[i].Name != null)
+                                {
+                                    <li>@Html.DisplayFor(m => Model.FileList[i].Name)</li>
+                                }
+
+                            </ul>
+                        </div>
+                    }
+                    <div style="position: relative; display: block">
+                        @if (Model.ArrayList[i] != null && Model.ArrayList[i].Length > 0 && Model.FileList[i].ExceptionMessage == null)
+                        {
+
+                            <table>
+                                <thead>
+                                    @if (Model.Step == 1)
+                                    {
+                                        <tr>
+                                            @for (int k = Model.Offset[i]; k < Model.ArrayList[i][0].Length && k < UploadModel.TableWidth; k++)
+                                            {
+
+                                                <td style="background-color: transparent">@Html.DropDownListFor(m => Model.IntegerList[i][k], new SelectList(Enumerable.Range(0, 11)), new { @class = "dropdown-content", style="width: 50px"})</td>
+
+                                            }
+                                        </tr>
+                                    }
+                                    <tr>
+                                        @for (int k = Model.Offset[i]; k < Model.ArrayList[i][0].Length && k < UploadModel.TableWidth; k++)
+                                        {
+                                            <th style="width: 50px;">@Html.DisplayFor(m => Model.ArrayList[i][0][k])</th>
+                                        }
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @for (int j = 1; j < Model.ArrayList[i].Length && j < UploadModel.TableHeight; j++)
+                                    {
+                                        <tr>
+                                            @for (int k = Model.Offset[i]; k < Model.ArrayList[i][j].Length && k < UploadModel.TableWidth; k++)
+                                            {
+                                                <td style="width: 50px;">@Html.DisplayFor(m => Model.ArrayList[i][j][k])</td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+
+                            </table>
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(m => Model.FileList[i].ExceptionMessage)
+                        }
+                    </div>
+                    <br />
+                }
+
+                </div>
+            }
+
+        }
+        else
+        {
+                <div style="margin-right: -100%">
+                    @for (int i = 0; i < Model.FileList.Count; i++)
+                    {
+                        <div class="uploadcontentrow">
+                        @if (Model.FileList[i] != null)
+                        {
+                            @if (Model.Step == 1)
+                            {
+                                    <ul>
+                                        @if (Model.FileList[i].ID != null)
+                                        {
+                                            <li>@Html.DisplayFor(m => Model.FileList[i].ID)</li>
+                                        }
+                                        <li>@Html.DisplayFor(m => Model.FileList[i].Name)</li>
+                                    </ul>
+                            }
+                        
+                            <div class="previewtablerowx">
+                                @if (Model.ArrayList[i] != null && Model.ArrayList[i].Length > 0 && Model.FileList[i].ExceptionMessage == null)
+                                {
+
+                                    <table>
+                                        <tbody>
+
+                                            @for (int k = 0; k < Model.ArrayList[i][0].Length; k++)
+                                            {
+                                                <tr>
+                                                    <td style="width: 50px;">@Html.DisplayFor(m => Model.ArrayList[i][0][k])</td>
+                                                    @if (Model.Step == 1)
+                                                    {
+                                                        <td style="background-color: transparent">@Html.DropDownListFor(m => Model.IntegerList[i][k], new SelectList(Enumerable.Range(0, Model.ArrayList[i][0].Length)), new { @class = "dropdown-content" })</td>
+                                                    }
+
+                                                </tr>
+                                            }
+
+                                    </table>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(m => Model.FileList[i].ExceptionMessage)
+                                }
+                            </div>
+                        }
+                        </div>
+                    }
+
+                </div>
+         }
+
+         <br />
+         @if (Model.Step == 1)
+         {
+             <button type="submit" class="button">@ViewData["ChangePreview"]</button>
+         }
+         else
+         {
+             <button type="submit" class="button" name="save" value="1">@ViewData["Save"]</button>
+         }
+ }
+</div>
+}
+
+

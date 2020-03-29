@@ -1,0 +1,114 @@
+﻿@model GEOMiner.Models.SessionModel
+@{
+    ViewData["Title"] = "Session";
+}
+@section scripts
+{
+    <script>
+        //alert('Starttest');
+        function addEventHandler(obj, evt, handler) {
+            if (obj.addEventListener) {
+                obj.addEventListener(evt, handler, false);
+            }
+            else if (obj.attachEvent) {
+                ob.attachEvent('on' + evt, handler);
+            }
+            else {
+                obj['on' + evt] = handler;
+            }
+        }
+        $(document).ready(function () {
+            //alert("ready");
+            $('#buttonCheckFile').click(function () {
+                $('#formUpload').submit();
+            });
+
+            $('#file').change(function () {
+                $('#buttonCheckFile').removeAttr("disabled");
+                $('#fileName').attr("disabled", "disabled");
+                if ($(this).val() == "") {
+                    $('#buttuonCheckFile').attr("disabled", "disabled");
+                    $('#fileName').removeAttr("disabled");
+                }
+            });
+            //alert('File.change');
+
+            $('#fileName').change(function () {
+                $('#buttonCheckFile').removeAttr("disabled");
+                $('#file').attr("disabled", "disabled");
+                if ($('#fileName').val() == "") {
+                    $('#buttuonCheckFile').attr("disabled", "disabled");
+                    $('#file').removeAttr("disabled");
+                }
+            });
+            //alert('FileName.change');
+
+            if (window.FileReader) {
+                var drop = document.getElementById('dropZone');
+                function cancel(e) {
+                    if (e.preventDefault) { e.preventDefault(); } return false;
+                }
+
+                addEventHandler(drop, 'dragover', cancel);
+                addEventHandler(drop, 'dragenter', cancel);
+                //alert("FileReader");
+            }
+
+
+            addEventHandler(drop, 'drop', function (e) {
+                if (drop != null && drop != undefined) {
+                    e = e || window.event;
+                    if (e.preventDefault) {
+                        e.preventDefault();
+                    }
+                    var dt = e.dataTransfer;
+                    var files = dt.files;
+                    if (files.length > 0) {
+                        var file = files[0];
+                        var reader = new FileReader();
+                        reader.onload = function (event) {
+                            $('#fileString').val(event.target.result);
+                            $('#fileName').val(file.name);
+                            $('#fileName').change();
+
+                        }
+                        reader.readAsDataURL(file);
+                        return true;
+                    }
+                }
+                return false;
+            })
+            //alert('EndTest');
+
+        })
+    </script>
+}
+
+@using (Html.BeginForm("LoadSessionFromFile", "Session", FormMethod.Post, new { enctype = "multipart/form-data", id = "formUpload" }))
+{
+    <div class="form-group" id="selectZone">
+        <label id="fileLabel" class="col-xl-12" for="file">Datei auswählen</label>
+        @Html.TextBoxFor(m => m.file, new { type = "file", accept = ".xml", placeholder = "Bitte die Datei auswählen", @class = "fileinput"})
+        @Html.ValidationMessageFor(m => m.file)
+    </div>
+
+    <div class="form-group" id="dropZone">
+        <label id="fileNameLabel" class="col-xl-12" for="fileName">Datei reinziehen</label>
+        @Html.TextBoxFor(m => m.fileName, new { accept = ".xml", placeholder = "Bitte ziehen sie hier ihre Datei rein.", @class="filedrop" })
+        @Html.HiddenFor(m => m.fileString)
+
+    </div>
+
+    @if (Model.valError)
+    {
+        <p style="color:red">@Html.DisplayFor(m => m.validationMessage)</p>
+    }
+    else
+    {
+        <p><font color="green">@Html.DisplayFor(m => m.validationMessage)</font></p>
+    }
+
+    <button class="button" type="submit" id="buttonCheckFile" disabled="disabled">Load</button>
+}
+
+
