@@ -321,10 +321,8 @@ namespace GEOMiner.Classes
 
         public static string filter_GEOProfiles_soft(string CSVPath, string IdentPath, string tablePath)
         {
-            // creates new file that ends with name: file.txt => file_numerical.txt
-            // if original matrix part is too short (only "ID_REF" line) returns ','-separated GSM accessions
-            // then it is probably useful to try another search and do data imputation
-            // if matrix part of the original file is large enough, returns destination path
+            // splits file at CSVPath into header (contains additional information) and
+            // table (contains actual data, including headers)
             // if script fails, returns null
             string ret;
             try { ret = run_file(PythonScriptLocation["filter_GEOProfiles_soft"], $"\"{CSVPath}\" \"{IdentPath}\" \"{tablePath}\""); }
@@ -345,7 +343,6 @@ namespace GEOMiner.Classes
         }
         public static string filter_GEODatasets_matrix(string CSVPath, string DestinationPath)
         {
-            // creates new file that ends with name: file.txt => file_numerical.txt
             // if original matrix part is too short (only "ID_REF" line) returns ','-separated GSM accessions
             // then it is probably useful to try another search and do data imputation
             // if matrix part of the original file is large enough, returns destination path
