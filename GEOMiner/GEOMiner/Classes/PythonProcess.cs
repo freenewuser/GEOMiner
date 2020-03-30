@@ -21,6 +21,7 @@ namespace GEOMiner.Classes
                 {"confirm_csv_dialect", Path.Combine(PythonScriptPath, "confirm_csv_dialect.py") },
                 {"convert_csv_dialect", Path.Combine(PythonScriptPath, "convert_csv_dialect.py") },
                 {"filter_GEODatasets_matrix", Path.Combine(PythonScriptPath, "filter_GEODatasets_matrix.py") },
+                {"filter_GEOProfiles_soft", Path.Combine(PythonScriptPath, "filter_GEOProfiles_soft.py") },
                 {"matrix_file_imputation", Path.Combine(PythonScriptPath, "matrix_file_imputation.py") },
                 {"transpose_matrix", Path.Combine(PythonScriptPath, "transpose_matrix.py") }
             };
@@ -293,31 +294,55 @@ namespace GEOMiner.Classes
             }
         }
 
-        public static bool convert_csv_dialect( string CSVPath, string old_item_delimiter, string old_line_delimiter, string DestinationPath=null)
+        public static bool convert_csv_dialect( string CSVPath, string old_item_delimiter, string DestinationPath=null)
         {
-            // sets line delimiter to ', ' and line delimiter to '\n', does not delete old file, except when old and new path are equal
+            // sets line delimiter to '; ', does not delete old file, except when old and new path are equal
             // if script fails, returns false
             if (DestinationPath == null) { DestinationPath = CSVPath; }
-            string args = $"\"{CSVPath}\" \"{old_item_delimiter}\" \"{old_line_delimiter}\" \"{DestinationPath}\"";
+            string args = $"\"{CSVPath}\" \"{old_item_delimiter}\" \"{DestinationPath}\"";
 
             string ret;
-            try { ret = run_file(PythonScriptLocation["confirm_csv_dialect"], args); }
+            try { ret = run_file(PythonScriptLocation["convert_csv_dialect"], args); }
             catch 
             { 
                 Controllers.LogController.LogError($"FileNotFoundError: Python script at " +
-                        $"{PythonScriptLocation["confirm_csv_dialect"]} not found"); return false; 
+                        $"{PythonScriptLocation["convert_csv_dialect"]} not found"); return false; 
             }
 
             if (ret.StartsWith("Error"))
             {
                 Controllers.LogController.LogError($"Erratic Python response from {PythonScriptLocation["convert_csv_dialect"]}: {ret}\n"
-                    +$"Arguments: {CSVPath}, '{old_item_delimiter}', '{old_line_delimiter}', {DestinationPath}");
+                    +$"Arguments: {CSVPath}, '{old_item_delimiter}', {DestinationPath}");
                 return false;
             }
 
             return true;
         }
 
+        public static string filter_GEOProfiles_soft(string CSVPath, string IdentPath, string tablePath)
+        {
+            // creates new file that ends with name: file.txt => file_numerical.txt
+            // if original matrix part is too short (only "ID_REF" line) returns ','-separated GSM accessions
+            // then it is probably useful to try another search and do data imputation
+            // if matrix part of the original file is large enough, returns destination path
+            // if script fails, returns null
+            string ret;
+            try { ret = run_file(PythonScriptLocation["filter_GEOProfiles_soft"], $"\"{CSVPath}\" \"{IdentPath}\" \"{tablePath}\""); }
+            catch
+            {
+                Controllers.LogController.LogError($"FileNotFoundError: Python script at " +
+                    $"{PythonScriptLocation["filter_GEOProfiles_soft"]} not found"); return null;
+            }
+
+            if (ret.StartsWith("Error"))
+            {
+                Controllers.LogController.LogError($"Erratic Python response from {PythonScriptLocation["filter_GEOProfiles_soft"]}: {ret}\n"
+                    + $"Arguments: {CSVPath}, {IdentPath} {tablePath}");
+                return null;
+            }
+
+            return ret;
+        }
         public static string filter_GEODatasets_matrix(string CSVPath, string DestinationPath)
         {
             // creates new file that ends with name: file.txt => file_numerical.txt
@@ -336,7 +361,7 @@ namespace GEOMiner.Classes
             if (ret.StartsWith("Error"))
             {
                 Controllers.LogController.LogError($"Erratic Python response from {PythonScriptLocation["filter_GEODatasets_matrix"]}: {ret}\n"
-                    +$"Arguments: {CSVPath}, {DestinationPath}");
+                    + $"Arguments: {CSVPath}, {DestinationPath}");
                 return null;
             }
 
