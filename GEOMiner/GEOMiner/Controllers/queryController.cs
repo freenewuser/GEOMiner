@@ -213,6 +213,13 @@ namespace GEOMiner.Controllers
                                     newContent.accession = element.Value;
                                 }
                                 break;
+                            case (XmlNodeType.Element, "GDS", "geoprofiles"):
+                                element = XElement.ReadFrom(reader) as XElement;
+                                if (element != null)
+                                {
+                                    newContent.accession = "GDS"+element.Value;
+                                }
+                                break;
                             case (XmlNodeType.Element, "summary", "gds"):
                                 element = XElement.ReadFrom(reader) as XElement;
                                 if (element != null)

@@ -102,7 +102,39 @@ namespace GEOMiner.Controllers
         }
 
         //#################################################################################################
-        public static string DownloadToFile(List<Classes.Content> clist, bool forProcessing = true, bool disableImputation = true)
+
+        public static string DownloadAndProcessGEOProfiles(List<Classes.Content> clist)
+        {
+            string zipName = Path.Combine(zipPath, Program.GuidString + ".zip");
+            ClearDirectory(tmpPath);
+
+            Directory.CreateDirectory(tmpPath);
+            Directory.CreateDirectory(zipPath);
+            Directory.CreateDirectory(dataPath);
+            Directory.CreateDirectory(processedPath);
+
+            foreach (string GDS_accession in clist.Where(cont => cont.download).Select(cont => cont.accession).Distinct())
+            {
+                string filename = $"{GDS_accession}_full.soft.gz";
+                if (!Classes.web_scraper.download_soft_file(GDS_accession, Path.Combine(zipPath, $"{GDS_accession}_full.soft.gz")))
+                { LogController.LogError($"Could not download entry for {GDS_accession}"); continue; }
+
+                MoveAndExtractFiles(zipPath, dataPath);
+                Classes.PythonProcess.filter_GEOProfiles_soft(Path.Combine(dataPath, $"{GDS_accession}_full.soft"),
+                                                            Path.Combine(processedPath, $"{GDS_accession}_identifier.soft"),
+                                                            Path.Combine(processedPath, $"{GDS_accession}_data.soft"));
+            }
+
+            ZipFile.CreateFromDirectory(processedPath, zipName);
+            ClearDirectory(dataPath);
+            ClearDirectory(processedPath);
+
+            return zipName;
+        }
+
+
+        //#################################################################################################
+        public static string DowloadAndProcessGDS(List<Classes.Content> clist, bool forProcessing = true, bool disableImputation = true)
         {
             string zipName = Path.Combine(zipPath, Program.GuidString + ".zip");
             ClearDirectory(tmpPath);
@@ -227,9 +259,6 @@ namespace GEOMiner.Controllers
 
                 }
             }
-
-
-           
 
             ZipFile.CreateFromDirectory(dataPath, zipName);
             //var bArray = System.Text.Encoding.UTF8.GetBytes(csv.ToString());

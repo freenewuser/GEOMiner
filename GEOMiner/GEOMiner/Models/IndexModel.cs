@@ -33,39 +33,6 @@ namespace GEOMiner.Models
 
         public void Init()
         {
-            //this.FilterList = new Classes.FList();
-            //this.SomeFilters = new List<string>();
-
-            /*this.SomeFilters.Add("Attribute");
-            this.SomeFilters.Add("Attribute Name");
-            this.SomeFilters.Add("Author");
-            this.SomeFilters.Add("Dataset Type");
-            this.SomeFilters.Add("Description");
-            this.SomeFilters.Add("Entry Type");
-            this.SomeFilters.Add("Filter");
-            this.SomeFilters.Add("Geo Accession");
-            this.SomeFilters.Add("MeSH Terms");
-            this.SomeFilters.Add("Number of Platform Probes");
-            this.SomeFilters.Add("Number of Samples");
-            this.SomeFilters.Add("Organism");
-            this.SomeFilters.Add("Platform Technology Type");
-            this.SomeFilters.Add("Project");
-            this.SomeFilters.Add("Properties");
-            this.SomeFilters.Add("Publication Date");
-            this.SomeFilters.Add("Related Platform");
-            this.SomeFilters.Add("Reporter Identifier");
-            this.SomeFilters.Add("Sample Source");
-            this.SomeFilters.Add("Sample Type");
-            this.SomeFilters.Add("Sample Value Type");
-            this.SomeFilters.Add("Submitter Institue");
-            this.SomeFilters.Add("Subset Description");
-            this.SomeFilters.Add("Subset Variable Type");
-            this.SomeFilters.Add("Supplementary Files");
-            this.SomeFilters.Add("Tag Length");
-            this.SomeFilters.Add("Title");
-            this.SomeFilters.Add("Update Date");
-            this.SomeFilters.Add("Regular Expression");*/
-
             this.DatabaseList = new List<Classes.Database>();
             DirectoryInfo cfg = new DirectoryInfo(@"Config\Datenbanken");
             if(cfg.Exists)
@@ -124,11 +91,6 @@ namespace GEOMiner.Models
             this.newSite = -1;
 
             this.database = this.DatabaseList.FirstOrDefault();
-            /*this.dataBases = new Dictionary<string, string>();
-            this.dataBases.Add("GEO DataSets", "gds");
-            this.dataBases.Add("GEO Profiles", "geoprofiles");
-
-            this.database = dataBases["GEO DataSets"];*/
 
             var b = SetPartialList();
 

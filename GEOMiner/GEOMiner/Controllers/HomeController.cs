@@ -31,7 +31,11 @@ namespace GEOMiner.Controllers
             LogController.End();
             return View("~/Views/Home/Index.cshtml", Program.indexModel);
         }
-
+        //#################################################################################################
+        public IActionResult Privacy()
+        {
+            return View("~/Views/Home/Privacy.cshtml", Program.indexModel);
+        }
         //#################################################################################################
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -138,6 +142,16 @@ namespace GEOMiner.Controllers
             switch (Program.indexModel.database.KeyName)
             {
                 case ("geoprofiles"):
+
+                    var zipFile = FileController.DownloadAndProcessGEOProfiles(Program.indexModel.ContentList);
+                    
+                    if (zipFile != null && System.IO.File.Exists(zipFile))
+                    {
+                        var bArray = System.IO.File.ReadAllBytes(zipFile);
+                        return File(bArray, "application/octet-stream", "export.zip");
+                    }
+                    else Controllers.LogController.LogError($"Zipfile could not be accessed at {zipFile}");
+                    //break;
                     var csv = FileController.WriteListToCsv(Program.indexModel.ContentList);
                     if (csv != null)
                     {
@@ -146,7 +160,7 @@ namespace GEOMiner.Controllers
                     }
                     break;
                 case ("gds"):
-                    var processedPath = FileController.DownloadToFile(Program.indexModel.ContentList);
+                    var processedPath = FileController.DowloadAndProcessGDS(Program.indexModel.ContentList);
                     if (processedPath != null)
                     {
                         return RedirectToAction("Upload", "Upload");
@@ -155,8 +169,6 @@ namespace GEOMiner.Controllers
             }
 
             return RedirectToAction("Index", "Home");
-
-
         }
 
         //#################################################################################################
