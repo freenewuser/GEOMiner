@@ -246,14 +246,8 @@
          }
 
          <br />
-         @if (Model.Step == 1)
-         {
-             <button type="submit" class="button">@ViewData["ChangePreview"]</button>
-         }
-         else
-         {
-             <button type="submit" class="button" name="save" value="1">@ViewData["Save"]</button>
-         }
+         <button type="submit" class="button">@ViewData["ChangePreview"]</button>
+         <button type="submit" class="button" name="save" value="1">@ViewData["Save"]</button>
  }
 </div>
 }
