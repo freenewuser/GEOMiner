@@ -247,7 +247,7 @@ namespace GEOMiner.Controllers
                         {
                             Classes.PythonProcess.transpose_matrix(csvFile);
                             #if _DEBUG
-                            string dest = Path.Combine(csvFile, @"..\..", Path.GetFileName(csvFile));
+                            string dest = Path.Combine(csvFile, "..", "..", Path.GetFileName(csvFile));
                             if (!File.Exists(dest)) { File.Copy(csvFile, dest); }
                             #endif
                         }

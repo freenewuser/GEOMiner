@@ -133,7 +133,7 @@ namespace GEOMiner.Controllers
             StartZeit = DateTime.Now;
 
             String base_address = $"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/{request_type}.fcgi?db={database}{version}&retmax=1000";
-            String authenticators = "&tools=GEOMiner&Email=GEOMiner@ovgu.de";
+            String authenticators = "&tools=GEOMiner&Email=GEOMiner@ovgu.de&api_key=284c0c6aaa88d90d532e60eed8446e68ce09";
 
             String url = base_address + request + authenticators;
             if (this.WebEnvironment == null)
