@@ -8,9 +8,11 @@ using System.Xml;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Net.Http;
 using System.IO.Compression;
+using System.Runtime.InteropServices;
 
 namespace GEOMiner.Controllers
 {
@@ -19,6 +21,14 @@ namespace GEOMiner.Controllers
         private static DateTime StartZeit;
         public static string _FlatMode = "FLAT";
         public static string _RowMode = "ROW";
+
+        public static readonly string tmpPath =
+                    (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? @"C:\temp\tmp_upload_" + Program.GuidString : Path.Combine("/tmp", "tmp_upload_" + Program.GuidString);
+        public static readonly string dataPath = Path.Combine(tmpPath, "data");
+        public static readonly string csvPath = Path.Combine(tmpPath, "csv");
+        public static readonly string processedPath = Path.Combine(tmpPath, "processed");
+        public static readonly string exportPath = Path.Combine(tmpPath, "export");
+        public static readonly string exportZipPath = Path.Combine(tmpPath, "export_zipped");
 
         //#################################################################################################
         public IActionResult Upload()
@@ -43,11 +53,6 @@ namespace GEOMiner.Controllers
 
                 Program.uploadModel.ExceptionMessage = null;
                 Program.uploadModel.Step = 1;
-
-                string tmpPath = @"C:\temp\tmp_upload_" + Program.GuidString;
-                string dataPath = Path.Combine(tmpPath, "data");
-                string csvPath = Path.Combine(tmpPath, "csv");
-                string processedPath = Path.Combine(tmpPath, "processed");
 
                 Directory.CreateDirectory(tmpPath);
                 Directory.CreateDirectory(dataPath);
@@ -294,29 +299,48 @@ namespace GEOMiner.Controllers
         public IActionResult SaveView()
         {
 
-            var csv = new StringBuilder();
-
-            for (int i = 0; i < Program.uploadModel.ArrayList[0].Length; i++)
+            Directory.CreateDirectory(exportZipPath);
+            Directory.CreateDirectory(exportPath);
+            for (int k = 0; k < Program.uploadModel.FileList.Count; k++)
             {
-                string line = null;
-                for (int j = 0; j < Program.uploadModel.ArrayList[0][i].Length; j++)
-                {
-                    if(line == null)
-                    {
-                        line = Program.uploadModel.ArrayList[0][i][j];
-                    }
-                    else
-                    {
-                        line = line + ";" + Program.uploadModel.ArrayList[0][i][j];
-                    }
 
-                }
-                csv.AppendLine(line);
+                if (Program.uploadModel.ArrayList[k] == null) continue;
+                var csv = new StringBuilder();
                 
+                for (int i = 0; i < Program.uploadModel.ArrayList[k].Length; i++)
+                {
+                    string line = null;
+                    for (int j = 0; j < Program.uploadModel.ArrayList[k][i].Length; j++)
+                    {
+                        if (line == null)
+                        {
+                            line = Program.uploadModel.ArrayList[k][i][j];
+                        }
+                        else
+                        {
+                            line = line + ";" + Program.uploadModel.ArrayList[k][i][j];
+                        }
+
+                    }
+                    csv.AppendLine(line);
+                }
+                var name = Program.uploadModel.FileList[k].ID + "_" + Program.uploadModel.FileList[k].Name + ".csv";
+                System.IO.File.WriteAllText(Path.Combine(exportPath,name), csv.ToString());
             }
 
-            var bArray = System.Text.Encoding.UTF8.GetBytes(csv.ToString());
-            return File(bArray, "application/octet-stream", "export.csv");
+            var zipname = Path.Combine(exportZipPath, "export.zip");
+            ZipFile.CreateFromDirectory(exportPath, zipname);
+
+            const string contentType = "application/zip";
+            HttpContext.Response.ContentType = contentType;
+            var result = new FileContentResult(System.IO.File.ReadAllBytes(zipname), contentType)
+            {
+                FileDownloadName = "export.zip"
+            };
+            FileController.ClearDirectory(exportPath);
+            FileController.ClearDirectory(exportZipPath);
+
+            return result;
         }
     }
 }
