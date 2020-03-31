@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using log4net;
 using Microsoft.AspNetCore.Http.Features;
+using System.Runtime.InteropServices;
+using System.IO;
 
 namespace GEOMiner
 {
@@ -33,7 +35,7 @@ namespace GEOMiner
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, Microsoft.AspNetCore.Hosting.IApplicationLifetime applicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -66,6 +68,27 @@ namespace GEOMiner
             app.UseStaticFiles();
 
             loggerFactory.AddLog4Net();
+
+            applicationLifetime.ApplicationStarted.Register(OnStart);
+            applicationLifetime.ApplicationStopping.Register(OnStopping);
+            applicationLifetime.ApplicationStopped.Register(OnStopped);
+        }
+
+        private void OnStopping()
+        {
+            Console.WriteLine("GEOMiner is stopping...");
+            string tmpPath = (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) ? @"C:\temp\tmp_upload_" + Program.GuidString : Path.Combine("/tmp", "tmp_upload_" + Program.GuidString);
+            Controllers.FileController.ClearDirectory(tmpPath, deleteFolder: true);
+        }
+
+        private void OnStart()
+        {
+            Console.WriteLine("GEOMiner started...");
+        }
+
+        private void OnStopped()
+        {
+           Console.WriteLine("GEOMiner stopped...");
         }
     }
 }

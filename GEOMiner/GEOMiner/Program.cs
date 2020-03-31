@@ -39,7 +39,7 @@ namespace GEOMiner
             GuidString = Convert.ToBase64String(g.ToByteArray());
             GuidString = GuidString.Replace("=", "").Replace("+", "").Replace("/", "").Replace("\\", "");
 
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).UseConsoleLifetime().Build().Run();
 
             
         }
@@ -49,6 +49,7 @@ namespace GEOMiner
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+               .UseConsoleLifetime();
     }
 }
