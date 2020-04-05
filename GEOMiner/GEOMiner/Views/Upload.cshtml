@@ -112,7 +112,7 @@
     @using (Html.BeginForm("ChangeViewMode", "Upload", FormMethod.Post))
     {
         <button type="submit" class="button" name="Mode" value="@Model.ViewMode">@ViewData["ChangeView"]</button>
-        <br/> <br/>
+        <br /> <br />
     }
 
     @using (Html.BeginForm("CreateNewView", "Upload", FormMethod.Post))
@@ -122,72 +122,72 @@
             @for (int i = 0; i < Model.FileList.Count; i++)
             {
                 <div style="margin-top: 30px">
-                @if (Model.FileList[i] != null)
-                {
-                    @if (Model.Step == 1)
+                    @if (Model.FileList[i] != null)
                     {
-                        <div class="uploadtable">
-
-
-                            <ul>
-                                @if (Model.FileList[i].ID != null)
-                                {
-                                    <li>@Html.DisplayFor(m => Model.FileList[i].ID)</li>
-                                }
-                                @if (Model.FileList[i].Name != null)
-                                {
-                                    <li>@Html.DisplayFor(m => Model.FileList[i].Name)</li>
-                                }
-
-                            </ul>
-                        </div>
-                    }
-                    <div style="position: relative; display: block">
-                        @if (Model.ArrayList[i] != null && Model.ArrayList[i].Length > 0 && Model.FileList[i].ExceptionMessage == null)
+                        @if (Model.Step == 1)
                         {
+                            <div class="uploadtable">
 
-                            <table>
-                                <thead>
-                                    @if (Model.Step == 1)
+
+                                <ul>
+                                    @if (Model.FileList[i].ID != null)
                                     {
+                                        <li>@Html.DisplayFor(m => Model.FileList[i].ID)</li>
+                                    }
+                                    @if (Model.FileList[i].Name != null)
+                                    {
+                                        <li>@Html.DisplayFor(m => Model.FileList[i].Name)</li>
+                                    }
+
+                                </ul>
+                            </div>
+                        }
+                        <div style="position: relative; display: block">
+                            @if (Model.ArrayList[i] != null && Model.ArrayList[i].Length > 0 && Model.FileList[i].ExceptionMessage == null)
+                            {
+
+                                <table>
+                                    <thead>
+                                        @if (Model.Step == 1)
+                                        {
+                                            <tr>
+                                                @for (int k = Model.Offset[i]; k < Model.ArrayList[i][0].Length && k < UploadModel.TableWidth; k++)
+                                                {
+
+                                                    <td style="background-color: transparent">@Html.DropDownListFor(m => Model.IntegerList[i][k], new SelectList(Enumerable.Range(0, 11)), new { @class = "dropdown-content", style = "width: 50px" })</td>
+
+                                                }
+                                            </tr>
+                                        }
                                         <tr>
                                             @for (int k = Model.Offset[i]; k < Model.ArrayList[i][0].Length && k < UploadModel.TableWidth; k++)
                                             {
-
-                                                <td style="background-color: transparent">@Html.DropDownListFor(m => Model.IntegerList[i][k], new SelectList(Enumerable.Range(0, 11)), new { @class = "dropdown-content", style="width: 50px"})</td>
-
+                                                <th style="width: 50px;">@Html.DisplayFor(m => Model.ArrayList[i][0][k])</th>
                                             }
                                         </tr>
-                                    }
-                                    <tr>
-                                        @for (int k = Model.Offset[i]; k < Model.ArrayList[i][0].Length && k < UploadModel.TableWidth; k++)
+                                    </thead>
+
+                                    <tbody>
+                                        @for (int j = 1; j < Model.ArrayList[i].Length && j < UploadModel.TableHeight; j++)
                                         {
-                                            <th style="width: 50px;">@Html.DisplayFor(m => Model.ArrayList[i][0][k])</th>
+                                            <tr>
+                                                @for (int k = Model.Offset[i]; k < Model.ArrayList[i][j].Length && k < UploadModel.TableWidth; k++)
+                                                {
+                                                    <td style="width: 50px;">@Html.DisplayFor(m => Model.ArrayList[i][j][k])</td>
+                                                }
+                                            </tr>
                                         }
-                                    </tr>
-                                </thead>
+                                    </tbody>
 
-                                <tbody>
-                                    @for (int j = 1; j < Model.ArrayList[i].Length && j < UploadModel.TableHeight; j++)
-                                    {
-                                        <tr>
-                                            @for (int k = Model.Offset[i]; k < Model.ArrayList[i][j].Length && k < UploadModel.TableWidth; k++)
-                                            {
-                                                <td style="width: 50px;">@Html.DisplayFor(m => Model.ArrayList[i][j][k])</td>
-                                            }
-                                        </tr>
-                                    }
-                                </tbody>
-
-                            </table>
-                        }
-                        else
-                        {
-                            @Html.DisplayFor(m => Model.FileList[i].ExceptionMessage)
-                        }
-                    </div>
-                    <br />
-                }
+                                </table>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(m => Model.FileList[i].ExceptionMessage)
+                            }
+                        </div>
+                        <br />
+                    }
 
                 </div>
             }
@@ -195,23 +195,23 @@
         }
         else
         {
-                <div style="margin-right: -100%">
-                    @for (int i = 0; i < Model.FileList.Count; i++)
-                    {
-                        <div class="uploadcontentrow">
+            <div style="margin-right: -100%">
+                @for (int i = 0; i < Model.FileList.Count; i++)
+                {
+                    <div class="uploadcontentrow">
                         @if (Model.FileList[i] != null)
                         {
                             @if (Model.Step == 1)
                             {
-                                    <ul>
-                                        @if (Model.FileList[i].ID != null)
-                                        {
-                                            <li>@Html.DisplayFor(m => Model.FileList[i].ID)</li>
-                                        }
-                                        <li>@Html.DisplayFor(m => Model.FileList[i].Name)</li>
-                                    </ul>
+                                <ul>
+                                    @if (Model.FileList[i].ID != null)
+                                    {
+                                        <li>@Html.DisplayFor(m => Model.FileList[i].ID)</li>
+                                    }
+                                    <li>@Html.DisplayFor(m => Model.FileList[i].Name)</li>
+                                </ul>
                             }
-                        
+
                             <div class="previewtablerowx">
                                 @if (Model.ArrayList[i] != null && Model.ArrayList[i].Length > 0 && Model.FileList[i].ExceptionMessage == null)
                                 {
@@ -239,16 +239,19 @@
                                 }
                             </div>
                         }
-                        </div>
-                    }
+                    </div>
+                }
 
-                </div>
-         }
+            </div>
+        }
 
-         <br />
-         <button type="submit" class="button">@ViewData["ChangePreview"]</button>
-         <button type="submit" class="button" name="save" value="1">@ViewData["Save"]</button>
- }
+        <br />
+        @if (Model.Step == 1)
+        {
+            <button type="submit" class="button">@ViewData["ChangePreview"]</button>
+        }
+        <button type="submit" class="button" name="save" value="1">@ViewData["Save"]</button>
+    }
 </div>
 }
 
